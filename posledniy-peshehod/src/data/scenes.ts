@@ -42,8 +42,8 @@ export interface Scene {
 /**
  * Граф истории по финальному сценарию:
  * 5 линейных сцен -> развилка (2 исхода) -> 2 финала.
- * Иллюстрации: scene-1..scene-6.jpg (scene-4.jpg переиспользуется в сцене 5
- * и на развилке), видео scene-4.mp4, звуковые сигналы cue-radio / cue-step.
+ * Иллюстрации: scene-1..scene-6.jpg (scene-4.jpg используется в scene-5 и на развилке),
+ * видео scene-4.mp4, звуковые сигналы cue-radio / cue-step.
  */
 export const scenes: Record<SceneId, Scene> = {
   'scene-1': {
@@ -79,8 +79,6 @@ export const scenes: Record<SceneId, Scene> = {
     ],
     image: 'scene-2.jpg',
     characters: ['miro', 'radio'],
-    audioCue: 'cue-radio.mp3',
-    continueLabel: 'Слушать',
     nextSceneId: 'scene-3',
   },
   'scene-3': {
@@ -119,8 +117,8 @@ export const scenes: Record<SceneId, Scene> = {
     id: 'scene-5',
     title: 'Выбор',
     text: [
-      'Дверь. След. На перилах — красная перчатка. Единственное цветное пятно в городе.',
-      'Миро не берёт её. Смотрит на неё так, будто она может заговорить первой.',
+      'Дверь. След упирается в порог. Дальше снег ровный — будто кто-то вошёл и не вышел.',
+      'Миро долго стоит, не решаясь взяться за ручку.',
       'Выбор: идти до конца — или стереть следы.',
     ],
     image: 'scene-4.jpg',

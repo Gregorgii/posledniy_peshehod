@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { scenes, START_SCENE_ID, type SceneId } from './data/scenes';
 import SceneManager from './components/SceneManager';
 import AudioPlayer from './components/AudioPlayer';
@@ -37,6 +37,8 @@ export default function App() {
   const [started, setStarted] = useState(false);
   const [startMuted, setStartMuted] = useState(false);
   const [sceneId, setSceneId] = useState<SceneId>(START_SCENE_ID);
+  const [cueToken, setCueToken] = useState(0);
+  const advanceLock = useRef(false);
 
   const scene = scenes[sceneId];
 
@@ -46,10 +48,15 @@ export default function App() {
   }, []);
 
   const handleAdvance = useCallback(() => {
+    if (advanceLock.current) return;
+    advanceLock.current = true;
     setSceneId((current) => {
       const next = scenes[current].nextSceneId;
       return next ?? current;
     });
+    window.setTimeout(() => {
+      advanceLock.current = false;
+    }, 900);
   }, []);
 
   const handleChoose = useCallback((nextSceneId: SceneId) => {
@@ -65,6 +72,10 @@ export default function App() {
     setSceneId('fork');
   }, []);
 
+  const handleReveal = useCallback(() => {
+    setCueToken((token) => token + 1);
+  }, []);
+
   return (
     <div className="app">
       {started ? (
@@ -74,6 +85,7 @@ export default function App() {
           onChoose={handleChoose}
           onChooseOther={handleChooseOther}
           onRestart={handleRestart}
+          onReveal={handleReveal}
         />
       ) : (
         <IntroScreen onStart={handleStart} />
@@ -84,6 +96,7 @@ export default function App() {
         sceneId={sceneId}
         audioCue={scene.audioCue}
         startMuted={startMuted}
+        cueToken={cueToken}
       />
     </div>
   );

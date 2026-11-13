@@ -11,7 +11,8 @@ interface VideoSceneProps {
 
 /**
  * Видео-вставка сцены. Если файла нет или он не загрузился — ошибка гасится,
- * показывается постер либо текстовый плейсхолдер.
+ * показывается постер либо текстовый плейсхолдер. При prefers-reduced-motion
+ * вместо видео показывается статичный кадр-постер.
  */
 export default function VideoScene({
   src,
@@ -19,10 +20,38 @@ export default function VideoScene({
   placeholderLabel = '[ВИДЕО — файл ещё не добавлен]',
 }: VideoSceneProps) {
   const [failed, setFailed] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(() =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  );
 
   useEffect(() => {
     setFailed(false);
   }, [src]);
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const onChange = (event: MediaQueryListEvent) => {
+      setReduceMotion(event.matches);
+    };
+    media.addEventListener('change', onChange);
+    return () => media.removeEventListener('change', onChange);
+  }, []);
+
+  if (src && reduceMotion) {
+    return (
+      <div
+        className="video-scene video-scene--static"
+        role="img"
+        aria-label="Статичный кадр видео"
+      >
+        {poster ? (
+          <img className="video-scene__video" src={poster} alt="" />
+        ) : (
+          <span className="video-scene__label">{placeholderLabel}</span>
+        )}
+      </div>
+    );
+  }
 
   if (!src || failed) {
     return (

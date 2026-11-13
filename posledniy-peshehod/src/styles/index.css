@@ -9,10 +9,9 @@
   --accent-bright: #d8363d;
   --line: rgba(244, 246, 248, 0.14);
 
-  --font-display: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua',
-    Georgia, 'Times New Roman', serif;
-  --font-body: 'Inter', 'Helvetica Neue', Helvetica, Arial, system-ui,
-    sans-serif;
+  --font-display: 'Oswald', 'Arial Narrow', sans-serif;
+  --font-body: 'PT Sans', system-ui, sans-serif;
+  --font-mono: 'PT Mono', ui-monospace, monospace;
 
   --snow-veil-duration: 720ms;
   --content-duration: 900ms;
@@ -151,6 +150,9 @@ button {
 .scene__content {
   position: relative;
   max-width: 46rem;
+}
+
+.scene__content-inner {
   animation: content-in var(--content-duration) ease both;
 }
 
@@ -188,6 +190,23 @@ button {
   font-size: 1.5em;
   color: var(--ink);
 }
+
+/* «Вайбовое» появление реплик: строки вылетают друг за другом. */
+.scene__text--cascade p {
+  animation: text-cascade-in 460ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.scene__text--cascade p:nth-child(1) { animation-delay: 0ms; }
+.scene__text--cascade p:nth-child(2) { animation-delay: 140ms; }
+.scene__text--cascade p:nth-child(3) { animation-delay: 280ms; }
+.scene__text--cascade p:nth-child(4) { animation-delay: 420ms; }
+.scene__text--cascade p:nth-child(5) { animation-delay: 560ms; }
+.scene__text--cascade p:nth-child(6) { animation-delay: 700ms; }
+.scene__text--cascade p:nth-child(7) { animation-delay: 840ms; }
+.scene__text--cascade p:nth-child(8) { animation-delay: 980ms; }
+.scene__text--cascade p:nth-child(9) { animation-delay: 1120ms; }
+.scene__text--cascade p:nth-child(10) { animation-delay: 1260ms; }
+.scene__text--cascade p:nth-child(n + 11) { animation-delay: 1400ms; }
 
 .scene__controls {
   margin-top: 2.25rem;
@@ -477,6 +496,19 @@ button {
   font-family: var(--font-body);
 }
 
+/* ---------- Моноширинные подписи ---------- */
+
+.scene__index,
+.scene__media-label,
+.ending__eyebrow,
+.intro__eyebrow,
+.character__name,
+.video-scene__label,
+.audio-toggle__text,
+.text-mono {
+  font-family: var(--font-mono);
+}
+
 /* ---------- Адаптивность ---------- */
 
 @media (max-width: 640px) {
@@ -523,6 +555,7 @@ button {
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }

@@ -33,9 +33,8 @@ export default function Snowfall({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const reduceMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)',
-    ).matches;
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let reduceMotion = media.matches;
 
     let width = 0;
     let height = 0;
@@ -44,10 +43,7 @@ export default function Snowfall({
 
     const makeFlakes = () => {
       const base = Math.round((width * height) / 14000);
-      const count = Math.max(
-        30,
-        Math.round(base * density * (reduceMotion ? 0.4 : 1)),
-      );
+      const count = Math.max(30, Math.round(base * density));
       flakes = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -58,16 +54,16 @@ export default function Snowfall({
       }));
     };
 
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = Math.floor(width * dpr);
-      canvas.height = Math.floor(height * dpr);
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      makeFlakes();
+    const paint = () => {
+      ctx.clearRect(0, 0, width, height);
+      for (const f of flakes) {
+        ctx.globalAlpha = f.alpha;
+        ctx.fillStyle = '#f4f6f8';
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
     };
 
     const tick = () => {
@@ -93,12 +89,40 @@ export default function Snowfall({
       raf = requestAnimationFrame(tick);
     };
 
+    const start = () => {
+      cancelAnimationFrame(raf);
+      if (reduceMotion) {
+        paint();
+        return;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      makeFlakes();
+      start();
+    };
+
+    const onMotionChange = (event: MediaQueryListEvent) => {
+      reduceMotion = event.matches;
+      start();
+    };
+
     resize();
-    tick();
+    media.addEventListener('change', onMotionChange);
     window.addEventListener('resize', resize);
 
     return () => {
       cancelAnimationFrame(raf);
+      media.removeEventListener('change', onMotionChange);
       window.removeEventListener('resize', resize);
     };
   }, [density, speed]);
