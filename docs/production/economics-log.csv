@@ -1,0 +1,19 @@
+﻿этап;задача;сервис;модель/инструмент;дата;число_генераций;число_попыток_до_годного;кредиты;стоимость_руб;время_генерации_мин;время_отбора_мин;время_доработки_мин;время_монтажа_мин;итого_время_мин;результат_файл;комментарий
+сценарий;сценарий 400–800 слов — черновик и итерации;LLM;модель: заполнить (например Claude / GPT / Gemini);;;;;;;;;;;docs/production/script.md;фиксировать каждую итерацию отдельной строкой при желании
+промпты;промпт-пак на все ассеты (style suffix + негативы);LLM;модель: заполнить;;;;;;;;;;;docs/production/assets-prompts.md;входит в подготовку к генерации
+иллюстрация;scene-1 «Утро. Свежий след» — style anchor;Nano Banana;Gemini 2.5 Flash Image;;;;;;;;;;;scene-1.jpg;генерировать первым — эталон стиля
+иллюстрация;scene-2 «Допрос радио»;Nano Banana;Gemini 2.5 Flash Image;;;;;;;;;;;scene-2.jpg;резерв — FLUX.1 schnell
+иллюстрация;scene-3 «Дневник»;Nano Banana;Gemini 2.5 Flash Image;;;;;;;;;;;scene-3.jpg;резерв — Kandinsky 3.1
+иллюстрация;scene-4 «След возвращается»;Nano Banana;Gemini 2.5 Flash Image;;;;;;;;;;;scene-4.jpg;также постер для видео
+иллюстрация;scene-5 «Есть кто-то» — красная перчатка;Nano Banana;Gemini 2.5 Flash Image;;;;;;;;;;;scene-5.jpg;единственный красный акцент
+иллюстрация;scene-6 «Снег ровный»;Nano Banana;Gemini 2.5 Flash Image;;;;;;;;;;;scene-6.jpg;резерв — Kandinsky 3.1
+портрет;char-miro — Миро (силуэт со спины, пол не читается);Nano Banana;Gemini 2.5 Flash Image (image-to-image от scene-1);;;;;;;;;;;char-miro.png;один seed и reference для всех портретов
+портрет;char-radio — Голос радио (предмет);Nano Banana;Gemini 2.5 Flash Image;;;;;;;;;;;char-radio.png;резерв — FLUX
+портрет;char-dog — Пёс (силуэт сбоку);Nano Banana;Gemini 2.5 Flash Image (image-to-image от scene-4);;;;;;;;;;;char-dog.png;тот же силуэт что в scene-4
+видео;scene-4.mp4 — низкий проезд по следу 12–15 с;Hailuo MiniMax;image-to-video (модель: заполнить);;;;;;;;;;;scene-4.mp4;резерв — Kling, Runway trial
+музыка;theme.mp3 — холодный эмбиент 30–40 с;Stable Audio / Mubert;модель: заполнить;;;;;;;;;;;theme.mp3;резерв — сборка из SFX в Audacity
+голос;реплики радио (TTS) 6–10 с суммарно;ElevenLabs;модель: заполнить;;;;;;;;;;;audio/radio/;резерв — Silero TTS локально
+sfx;cue-step / cue-radio / cue-tag / cue-wind / cue-creak;ElevenLabs SFX / Freesound;модель: заполнить;;;;;;;;;;;cue-*.mp3;Freesound — только CC0
+сборка сайта;каркас Vite + React, снежный движок, ветвление;LLM-ассистент + IDE;модель: заполнить;;;;;;;;;;;posledniy-peshehod/src/;код проверен и протестирован вручную
+вёрстка/интеграция;подключение медиа, captions, mute, reduced-motion;вручную (+ LLM-ассистент);—;;;;;;;;;;;src/data/scenes.ts + src/assets/;приёмка веса файлов
+qa;кросс-браузерная и адаптивная проверка, деплой;вручную;Lighthouse / браузеры;;;;;;;;;;;GitHub Pages URL;фиксировать найденные дефекты и правки
