@@ -3,7 +3,7 @@ project: "posledniy-peshehod"
 title: "Последний пешеход — exec-plan"
 type: exec-plan
 brief: docs/briefs/posledniy-peshehod.md
-status: active
+status: completed
 created: 2026-11-13
 updated: 2026-11-13
 course: "Культура ИИ: медиа и креативность (ИТМО)"
@@ -76,7 +76,7 @@ site_dir: posledniy-peshehod
   - Done when: покрыты все этапы (идея, сценарий, изображения, видео, аудио, код, отчёт); указаны реальные сервисы и число попыток; отмечена синтетическая природа голоса.
   - Depends on: Блок 4.
 
-- [ ] **Блок 8. Деплой на GitHub Pages + QA.** Публикация и проверка.
+- [x] **Блок 8. Деплой на GitHub Pages + QA.** Публикация и проверка.
   - Deliverables: запушенный репозиторий, зелёный workflow `.github/workflows/deploy.yml`, публичная ссылка.
   - Done when: сайт открывается на чистом браузере по Pages-URL; оба финала проходятся; 360 px и 1440 px без горизонтального скролла; Chrome/Safari/Firefox (по возможности iOS); первая загрузка < 3 с.
   - Depends on: Блок 5 (для финальной проверки).
