@@ -143,6 +143,6 @@ site_dir: posledniy-peshehod
 ## 7. Ссылки
 
 - Бриф: `docs/briefs/posledniy-peshehod.md`
-- Требования задания: `proekt2.html` (вариант 2 «Мультимедийная история»), встроенное описание `multimedia-story`
+- Требования задания: вариант 2 «Мультимедийная история» (LMS ITMO), файл с заданием в репозиторий не входит
 - Артефакты: `docs/script.md`, `docs/script-captions.md`, `docs/script-tts.txt`, `docs/assets/prompts.md`, `docs/assets/log.csv`, `docs/report.md`
 - Код и ассеты: `posledniy-peshehod/` (`src/data/scenes.ts`, `src/assets/{images,video,audio}/`)

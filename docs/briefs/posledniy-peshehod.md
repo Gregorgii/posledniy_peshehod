@@ -651,7 +651,7 @@ Each entry must include: asset ID, attempt number, what was wrong, what changed 
 ### Assignment
 
 - Course: «Культура ИИ: медиа и креативность», ИТМО, final project.
-- Saved assignment pages in the repository root: `proekt1.html`, `proekt2.html` (LMS export).
+- Assignment variant 2 «Мультимедийная история» (LMS ITMO); the assignment file is not part of the repository.
 - Requirements covered: story passport, 400–800 word script, ≥5 illustrations, 20–40 s audio, 10–20 s video, assembled mini-site, economic efficiency, AI declaration, bonus “Решения и ограничения”.
 
 ### Fixed product decisions
