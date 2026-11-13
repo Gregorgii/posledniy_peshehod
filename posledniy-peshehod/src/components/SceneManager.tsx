@@ -96,7 +96,7 @@ export default function SceneManager({
     <div className="scene-stage">
       <Snowfall density={1} speed={1} sweep={wiping} />
 
-      {background && (
+      {background && !video && (
         <div
           className="scene__background"
           style={{ backgroundImage: `url("${background}")` }}
