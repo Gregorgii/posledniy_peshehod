@@ -136,6 +136,34 @@ button {
   z-index: -1;
 }
 
+/* Мягкая подложка под текст поверх видео: тёмный левый-нижний угол
+   плавно уходит в прозрачность, не превращаясь в прямоугольник. */
+.scene__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      100deg,
+      rgba(10, 10, 11, 0.8) 0%,
+      rgba(10, 10, 11, 0.62) 30%,
+      rgba(10, 10, 11, 0.24) 55%,
+      rgba(10, 10, 11, 0) 76%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(10, 10, 11, 0.7) 0%,
+      rgba(10, 10, 11, 0.3) 36%,
+      rgba(10, 10, 11, 0) 62%
+    ),
+    radial-gradient(
+      ellipse at 14% 72%,
+      rgba(10, 10, 11, 0.45),
+      transparent 64%
+    );
+}
+
 .scene__media-label {
   position: absolute;
   top: clamp(1rem, 4vw, 2.5rem);
@@ -149,7 +177,22 @@ button {
 
 .scene__content {
   position: relative;
+  z-index: 2;
   max-width: 46rem;
+}
+
+/* На медиа текст дополнительно «отрывается» от кадра лёгкой тенью. */
+.scene__content--on-media .scene__index,
+.scene__content--on-media .scene__title,
+.scene__content--on-media .scene__text {
+  text-shadow:
+    0 1px 2px rgba(10, 10, 11, 0.85),
+    0 0 18px rgba(10, 10, 11, 0.5);
+}
+
+.scene__content--on-media .choice-button {
+  background: rgba(10, 10, 11, 0.62);
+  text-shadow: 0 1px 2px rgba(10, 10, 11, 0.8);
 }
 
 .scene__content-inner {
@@ -263,37 +306,71 @@ button {
   letter-spacing: 0.04em;
 }
 
-/* ---------- Персонажи ---------- */
+/* ---------- Персонажи: фигуры-«свидетели» у края кадра ---------- */
+
+.scene--with-witness {
+  padding-right: clamp(12rem, 34vw, 32rem);
+}
 
 .character-layer {
   position: fixed;
-  right: clamp(1rem, 4vw, 4rem);
+  top: 0;
+  right: 0;
   bottom: 0;
-  z-index: 3;
-  display: flex;
-  align-items: flex-end;
-  gap: clamp(0.3rem, 1vw, 1rem);
+  z-index: 1;
+  width: clamp(12rem, 34vw, 32rem);
   pointer-events: none;
 }
 
 .character {
-  width: clamp(6rem, 16vw, 15rem);
+  --char-opacity: 0.42;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
   margin: 0;
   opacity: 0;
-  transform: translateY(28px);
-  animation: character-in 820ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  filter: grayscale(1) contrast(1.1);
+  transform: translateY(34px) scale(0.985);
+  animation: witness-in 1100ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.character:nth-child(2) {
+  --char-opacity: 0.26;
+  right: 34%;
+  z-index: -1;
+  width: 64%;
 }
 
 .character__image {
   display: block;
   width: 100%;
-  height: auto;
-  max-height: 68vh;
-  object-fit: contain;
-  object-position: bottom;
-  mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
-  -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
+  height: clamp(20rem, 70vh, 44rem);
+  object-fit: cover;
+  object-position: 50% 100%;
+  filter: grayscale(1) brightness(0.96);
+  -webkit-mask-image:
+    linear-gradient(180deg, #000 0%, #000 58%, transparent 100%),
+    radial-gradient(ellipse 82% 78% at 58% 40%, #000 52%, transparent 84%);
+  mask-image:
+    linear-gradient(180deg, #000 0%, #000 58%, transparent 100%),
+    radial-gradient(ellipse 82% 78% at 58% 40%, #000 52%, transparent 84%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+.character:nth-child(2) .character__image {
+  height: clamp(16rem, 48vh, 32rem);
+  object-position: 50% 100%;
+}
+
+/* Радио — не фигура, а предмет у нижнего края: мягко растворяем подставку. */
+.character[data-character='radio'] .character__image {
+  -webkit-mask-image:
+    linear-gradient(180deg, #000 0%, #000 82%, transparent 100%),
+    radial-gradient(ellipse 70% 34% at 50% 82%, #000 42%, transparent 86%);
+  mask-image:
+    linear-gradient(180deg, #000 0%, #000 82%, transparent 100%),
+    radial-gradient(ellipse 70% 34% at 50% 82%, #000 42%, transparent 86%);
 }
 
 .character__silhouette {
@@ -301,13 +378,16 @@ button {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  height: clamp(10rem, 32vw, 22rem);
+  height: clamp(16rem, 58vh, 34rem);
   border-radius: 50% 50% 4px 4px / 18% 18% 4px 4px;
   background:
     radial-gradient(ellipse at 50% 22%, rgba(180, 35, 42, 0.22), transparent 62%),
     linear-gradient(180deg, rgba(58, 62, 69, 0.55), rgba(10, 10, 11, 0.9));
   border: 1px solid rgba(138, 144, 153, 0.18);
   backdrop-filter: blur(2px);
+  opacity: 0.55;
+  mask-image: linear-gradient(180deg, #000 62%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 62%, transparent 100%);
 }
 
 .character__name {
@@ -330,8 +410,8 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.9;
-  filter: grayscale(0.5);
+  opacity: 0.88;
+  filter: grayscale(0.55) brightness(0.8) contrast(1.04);
 }
 
 .video-scene--static .video-scene__video {
@@ -515,6 +595,34 @@ button {
 
 /* ---------- Адаптивность ---------- */
 
+@media (max-width: 720px) {
+  .scene--with-witness {
+    padding-right: clamp(1.25rem, 5vw, 5rem);
+  }
+
+  .character-layer {
+    display: none;
+  }
+
+  /* На узком экране текст занимает почти весь кадр — усиливаем подложку,
+     оставляя видео читаемым в средней части. */
+  .scene__scrim {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(10, 10, 11, 0.62) 0%,
+        rgba(10, 10, 11, 0.4) 34%,
+        rgba(10, 10, 11, 0.62) 100%
+      ),
+      linear-gradient(
+        100deg,
+        rgba(10, 10, 11, 0.5) 0%,
+        rgba(10, 10, 11, 0.16) 68%,
+        rgba(10, 10, 11, 0) 100%
+      );
+  }
+}
+
 @media (max-width: 640px) {
   .scene {
     justify-content: flex-start;
@@ -524,21 +632,6 @@ button {
 
   .scene__content {
     margin-top: auto;
-  }
-
-  .character-layer {
-    right: 50%;
-    transform: translateX(50%);
-    bottom: 0.5rem;
-    opacity: 0.55;
-  }
-
-  .character {
-    width: clamp(5rem, 26vw, 9rem);
-  }
-
-  .character__silhouette {
-    height: clamp(7rem, 26vw, 12rem);
   }
 
   .choices {

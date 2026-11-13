@@ -91,6 +91,7 @@ export default function SceneManager({
   const active = displayed;
   const background = resolveImage(active.image);
   const video = resolveVideo(active.video);
+  const showWitness = !active.isEnding && active.characters.length > 0;
 
   return (
     <div className="scene-stage">
@@ -107,7 +108,9 @@ export default function SceneManager({
 
       <div
         ref={sceneRef}
-        className={`scene${wiping ? ' is-wiping' : ''}`}
+        className={`scene${wiping ? ' is-wiping' : ''}${
+          showWitness ? ' scene--with-witness' : ''
+        }`}
         data-scene-id={active.id}
         aria-busy={wiping}
       >
@@ -120,6 +123,8 @@ export default function SceneManager({
             />
           </div>
         )}
+
+        {video && <div className="scene__scrim" aria-hidden="true" />}
 
         {!video && !background && (
           <span className="scene__media-label" aria-hidden="true">
@@ -135,7 +140,7 @@ export default function SceneManager({
           />
         ) : (
           <article
-            className="scene__content"
+            className={`scene__content${video ? ' scene__content--on-media' : ''}`}
             aria-live="polite"
             aria-atomic="true"
           >
@@ -184,7 +189,9 @@ export default function SceneManager({
           </article>
         )}
 
-        <CharacterLayer key={active.id} characters={active.characters} />
+        {showWitness && (
+          <CharacterLayer key={active.id} characters={active.characters} />
+        )}
       </div>
     </div>
   );

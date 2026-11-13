@@ -130,7 +130,7 @@ export const scenes: Record<SceneId, Scene> = {
     title: 'Развилка',
     text: ['Что выберет Миро — и кем останется?'],
     image: 'scene-4.jpg',
-    characters: [],
+    characters: ['miro'],
     choices: [
       { label: 'Идти до конца — значит, кто-то есть', nextSceneId: 'ending-a' },
       { label: 'Стереть следы — значит, остаться в одиночестве', nextSceneId: 'ending-b' },
